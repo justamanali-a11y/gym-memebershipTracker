@@ -1,0 +1,12 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Har owner sirf apna gym (gyms/{uid}) aur uske members dekh/badal sakta hai
+    match /gyms/{gymId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == gymId;
+    }
+    match /gyms/{gymId} {
+      allow read, write: if request.auth != null && request.auth.uid == gymId;
+    }
+  }
+}
